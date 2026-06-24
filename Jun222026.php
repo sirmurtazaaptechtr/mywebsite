@@ -62,3 +62,10 @@ switch($char) {
         echo "<p>'$char' is Consonent</p>";
     break;
 }
+
+$result = match($char) {
+    "A", "a", "E", "e", "I", "i", "O", "o", "U", "u" =>"<p>'$char' is Vowel</p>",
+    "Z", "z" => "<p>'$char' is the last Alphabet and it is Consonent</p>",
+    default => "<p>'$char' is Consonent</p>"
+};
+echo $result;
