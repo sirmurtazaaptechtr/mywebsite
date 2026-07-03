@@ -24,6 +24,8 @@ function total_value (float $num1, float $num2, float ...$nums) : float {
     return $sum;
 }
 
+
+
 my_fun();
 my_fun();
 
@@ -45,3 +47,19 @@ echo "<p> The square of 3 is " . squrer(3) . "</p>";
 echo total_value(1, 2, 3, 4, 5, 6, 7, 8, 9) . "<br>";
 echo total_value(1, 6) . "<br>";
 echo total_value(1, 6, 8) . "<br>";
+
+// Passing Arguments by Reference
+function swap (&$x, &$y)  {
+    echo "<p>InsideBeforeSwap:($x,$y)</p>";
+    $temp = $x;
+    $x = $y;
+    $y = $temp;
+    echo "<p>InsideAfterSwap:($x,$y)</p>";
+}
+
+$a = 1;
+$b = 2;
+
+echo "<p>OutsideBeforeSwap:($a,$b)</p>";
+swap($a, $b);
+echo "<p>OutsideAfterSwap:($a,$b)</p>";
