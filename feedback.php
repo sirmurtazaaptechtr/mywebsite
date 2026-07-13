@@ -1,13 +1,38 @@
 <?php
+function clean_input ($input) {
+    $input = trim($input);
+    $input = stripcslashes($input);
+    $input = htmlspecialchars($input);
+    return $input;
+}
 $first_name = $last_name = $gender = $email = $dob = $comments = '';
+$errors = [];
+$first_name_err = '';
 
 if($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $first_name = $_POST["first_name"];
-    $last_name = $_POST["last_name"];
-    $gender = $_POST["gender"];
-    $email = $_POST["email"];
-    $dob = $_POST["dob"];
-    $comments = $_POST["comments"];
+    if(empty($_POST["first_name"])) {
+        array_push($errors,"please enter first name");
+        $first_name_err = "please enter first name";
+    }elseif(preg_match("/^[a-zA-Z-' ]*$/",$_POST["first_name"])) {
+        $first_name = clean_input($_POST["first_name"]);
+    }else {
+        array_push($errors,"Only letters and white space allowed");
+        $first_name_err = "Only letters and white space allowed";
+    }
+    $last_name = clean_input($_POST["last_name"]);
+    $gender = clean_input($_POST["gender"]);
+    if(!empty($_POST["email"])) {
+        $email = clean_input($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            array_push($errors,"Invalid email format");
+        }
+    }else {
+        array_push($errors,"Email is required");
+    } 
+        
+    
+    $dob = clean_input($_POST["dob"]);
+    $comments = clean_input($_POST["comments"]);
 }
 
 ?>
@@ -23,10 +48,18 @@ if($_SERVER["REQUEST_METHOD"] == 'POST') {
     <div class="container">
         <h1>Feedback Form</h1>
         <h2>Enter Details</h2>
-        <form action="feedback.php" method="post" enctype="multipart/form-data">
+        <div>
+            <?php if(!empty($errors)){
+                echo "<pre>";
+                print_r($errors);                
+                echo "</pre>";
+            }?>
+        </div>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label" for="firstName">First Name</label>
                 <input class="form-control" type="text" name="first_name" id="firstName" value="<?php echo $first_name;?>">
+                <span class="text-danger"><?php echo $first_name_err;?></span>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="lastName">Last Name</label>
@@ -60,7 +93,7 @@ if($_SERVER["REQUEST_METHOD"] == 'POST') {
                 <button class="btn btn-outline-success" type="submit">Submit</button>
             </div>
         </form>
-        <?php if($_SERVER['REQUEST_METHOD'] == 'POST') {?>
+        <?php if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($errors)) {?>
         <div>
             <h2>Feedback Summary</h2>
             <ul>
