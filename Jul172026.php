@@ -53,12 +53,20 @@ echo "<p>Next week the date will be " . date("l, F j, Y h:i:s a", $dt) . "</p>";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP Date and Time</title>
     <style>
-    footer {
-        text-align: center;
-        padding: 1px;
-        background-color: black;
-        color: white;        
-    }
+        * {
+            font-family: cursive;
+        }
+        body {
+            margin: 0px;
+        }
+        footer {
+            position: sticky;
+            bottom: 0px;
+            text-align: center;
+            padding: 1px;
+            background-color: black;
+            color: white;        
+        }
     </style>
 </head>
 <body>
