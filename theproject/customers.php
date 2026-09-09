@@ -1,24 +1,9 @@
 <?php
-    $hostname = 'localhost';
-    $username = 'root';
-    $password = '';
-    $database = 'northwind';
-
-    if($conn = mysqli_connect($hostname, $username, $password, $database)) {
-        echo "<p>$database connected successfully!</p>";
-    }
-
+    require('header.php');    
     $sql = "SELECT * FROM `customers`";
     $result = mysqli_query($conn, $sql);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers</title>
-</head>
-<body>
+<main>
     <h1>Customers</h1>
     <table>
         <thead>
@@ -46,5 +31,6 @@
             <?php } ?>
         </tbody>
     </table>
-</body>
-</html>
+</main>
+    
+<?php require('footer.php') ?>
