@@ -3,9 +3,14 @@
     $sql = "SELECT * FROM `customers`";
     $result = mysqli_query($conn, $sql);
 ?>
-<main>
+<main class="container">
     <h1>Customers</h1>
-    <table>
+    <div>
+        <a type="button" class="btn btn-outline-primary btn-sm" href="customer.add.php">
+            + Add New Customer
+        </a>
+    </div>
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>CustomerID</th>

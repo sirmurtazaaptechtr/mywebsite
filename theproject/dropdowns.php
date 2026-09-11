@@ -7,11 +7,14 @@ $categories = mysqli_query($conn, $categories_sql);
 $suppliers_sql = "SELECT * FROM suppliers ORDER BY SupplierName";
 $suppliers = mysqli_query($conn, $suppliers_sql);
 
+$customers_sql = "SELECT * FROM customers ORDER BY CustomerName";
+$customers = mysqli_query($conn, $customers_sql);
+
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     pr($_POST);
 }
 ?>
-<main>
+<main class="container">
     <h1>Dropdowns</h1>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
         
@@ -42,6 +45,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         
         <br>
+
+        <div>
+            <label for="customerId">Customer</label>
+            <select name="CustomerID" id="customerId">
+                <option value="0">Select Customer</option>
+                <?php while($customer = mysqli_fetch_assoc($customers)) { ?>
+                <option value="<?php echo $customer['CustomerID']; ?>">
+                    <?php echo $customer['CustomerName']," | ",$customer['ContactName']; ?>
+                </option>
+                <?php } ?>
+            </select>
+        </div>
         
         <div>
             <input type="submit" id="submitBtn" name="SubmitBtn" value="Submit">
