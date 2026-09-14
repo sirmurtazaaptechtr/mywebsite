@@ -1,3 +1,65 @@
+<?php
+session_start();
+function pr ($data) {
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+$hostname = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'northwind';
+
+if($conn = mysqli_connect($hostname, $username, $password, $database)) {
+    echo "<p>$database connected successfully!</p>";
+}
+
+$Username = $Password = '';
+$Errors = [];
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(empty($_POST['Username'])) {
+        array_push($Errors, "Username is required");
+    }else {
+        $Username = test_input($_POST['Username']);
+    }
+
+    if(empty($_POST['Password'])) {
+        array_push($Errors, "Password is required");
+    }else {
+        $Password = test_input($_POST['Password']);
+    }
+    
+    $sql = "SELECT * FROM logins WHERE Username = '$Username'";
+    $logins = mysqli_query($conn, $sql);
+
+    if(mysqli_num_rows($logins) > 0) {
+        $row = mysqli_fetch_assoc($logins);
+        if($Password == $row['Password']) {
+            $_SESSION['isLogin'] = true;
+            $_SESSION['LoginID'] = $row['LoginID'];
+            $_SESSION['Username'] = $row['Username'];
+            $_SESSION['Type'] = $row['Type'];
+            $_SESSION['UserID'] = $row['UserID'];
+            header("Location:dashboard.php");
+            exit();
+        }else {
+            array_push($Errors, "Password is incorrect");            
+        }
+    }else {
+        array_push($Errors, "Username is incorrect");
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +67,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Login - NiceAdmin Bootstrap Template</title>
+    <title>Login - MyWebsite</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -57,7 +119,7 @@
                             <div class="d-flex justify-content-center py-4">
                                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                                     <img src="assets/img/logo.png" alt="">
-                                    <span class="d-none d-lg-block">NiceAdmin</span>
+                                    <span class="d-none d-lg-block">My Website</span>
                                 </a>
                             </div><!-- End Logo -->
 
@@ -69,23 +131,47 @@
                                         <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
                                         <p class="text-center small">Enter your username & password to login</p>
                                     </div>
+                                    <!-- Dismissible Bootstrap Alert for Errors -->
+                                    <?php if (!empty($Errors)) { ?>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <h5 class="alert-heading mb-2">Please fix the following errors:</h5>
+                                        <ul class="mb-0 ps-3">
+                                            <?php foreach ($Errors as $Error) { ?>
+                                            <li><?php echo htmlspecialchars($Error); ?></li>
+                                            <?php } ?>
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <?php } ?>
 
-                                    <form class="row g-3 needs-validation" novalidate>
+                                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post"
+                                        class="row g-3 needs-validation" novalidate>
 
                                         <div class="col-12">
-                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <label for="username" class="form-label">Username</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                <input type="text" name="username" class="form-control"
-                                                    id="yourUsername" required>
+                                                <input 
+                                                    type="text" 
+                                                    name="Username" 
+                                                    class="form-control" 
+                                                    id="username"
+                                                    value="<?php echo $Username; ?>"
+                                                    required>
                                                 <div class="invalid-feedback">Please enter your username.</div>
                                             </div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control"
-                                                id="yourPassword" required>
+                                            <label for="password" class="form-label">Password</label>
+                                            <input 
+                                                type="password" 
+                                                name="Password" 
+                                                class="form-control" 
+                                                id="password"
+                                                value="<?php echo $Password;?>"
+                                                required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
 
@@ -109,10 +195,6 @@
                             </div>
 
                             <div class="credits">
-                                <!-- All the links in the footer should remain intact. -->
-                                <!-- You can delete the links only if you purchased the pro version. -->
-                                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
                                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                             </div>
 
