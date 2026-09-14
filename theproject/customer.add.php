@@ -20,7 +20,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['AddBtn'])) {
         array_push($errors, "Customer contact name is required");
     }else {
         $ContactName = test_input($_POST['ContactName']);
-    }    
+    }
+        
     $Address = test_input($_POST['Address']);
     $City = test_input($_POST['City']);
     $PostalCode = test_input($_POST['PostalCode']);
