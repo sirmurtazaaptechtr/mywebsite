@@ -40,7 +40,8 @@ $customers = mysqli_query($conn, $sql);
                                     <th scope="col">Address</th>
                                     <th scope="col">City</th>
                                     <th scope="col">Postal Code</th>
-                                    <th scope="col">Country</th>
+                                    <th scope="col">Country</th>                                    
+                                    <th scope="col">Actions</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,6 +58,10 @@ $customers = mysqli_query($conn, $sql);
                                     <td><?php echo $customer['City']; ?></td>
                                     <td><?php echo $customer['PostalCode']; ?></td>
                                     <td><?php echo $customer['Country']; ?></td>
+                                    <td>
+                                        <a href="customer.edit.php?id=<?php echo $customer['CustomerID']; ?>">Edit</a>
+                                        <a href="customer.delete.php?id=<?php echo $customer['CustomerID']; ?>">Delete</a>
+                                    </td>
                                 </tr>
                                 <?php
                                 $srno++;
