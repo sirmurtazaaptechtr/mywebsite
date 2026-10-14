@@ -1,5 +1,10 @@
 <?php
 class Employee {
+    // Class Constant
+    const COMPANY_NAME = "Tech Solutions Inc.";
+    const COMPANY_ADDRESS = "123 Tech Street, Silicon Valley, CA";
+    const COMPANY_PHONE = "(123) 456-7890";
+
     // Properties 
     public $name;
     public $age;
@@ -17,6 +22,9 @@ class Employee {
         echo "Name: " . $this->name . "<br>";
         echo "Age: " . $this->age . "<br>";
         echo "Gender: " . $this->gender . "<br>";
+        echo "Company: " . self::COMPANY_NAME . "<br>";
+        echo "Address: " . self::COMPANY_ADDRESS . "<br>";
+        echo "Phone: " . self::COMPANY_PHONE . "<br>";
     }
 
     public function __destruct() {
@@ -54,11 +62,11 @@ class PartTimeEmployee extends Employee {
     }
 }
 
-$fte1 = new FullTimeEmployee("Anas", 20, "Male", 5000);
-$fte1->displayInfo();
+echo "Company: " . Employee::COMPANY_NAME . "<br>";
+echo "Address: " . PartTimeEmployee::COMPANY_ADDRESS . "<br>";
+echo "Phone: " . FullTimeEmployee::COMPANY_PHONE . "<br>";
 
-$pte1 = new PartTimeEmployee("Aidan", 18, "Male", 20);
-$pte1->displayInfo();
+echo "<hr>";
 
 $e1 = new Employee("Anas", 20, "Male");
 $e1->displayInfo();
@@ -68,4 +76,12 @@ $e2->displayInfo();
 
 $e3 = new Employee("Owais", 17, "Male");
 $e3->displayInfo();
+
+$fte1 = new FullTimeEmployee("John", 20, "Male", 5000);
+$fte1->displayInfo();
+
+$pte1 = new PartTimeEmployee("Jane", 18, "Female", 25);
+$pte1->displayInfo();
+
+
 ?>
